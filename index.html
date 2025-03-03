@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Pokemon Card checksite</title>
+</head>
+
+<h1>Pokemon Card checker</h1>
+<body>
+    <input type="number" id="pokemon_number" placeholder="Enter Pokémon Number">
+    <button onclick="getPokemonNumber()">Submit</button>
+<p id="output"></p>
+
+<script>
+    function getPokemonNumber() {
+        const pokemonNumber = document.getElementById("pokemon_number").value;
+        document.getElementById("output").innerText = "You entered: " + pokemonNumber;
+    }
+</script>
+</body>
+
+</html>
