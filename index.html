@@ -20,7 +20,7 @@
 
         if (data.data && data.data.length > 0) {
             const card = data.data[0];
-            document.getElementById("output").innerText = `Pokémon: ${card.name}, Price: $${card.tcgplayer?.prices?.normal?.market || 'N/A'}`;
+            document.getElementById("output").innerText = `Pokémon: ${card.name}, Price: $${card.tcgplayer?.prices?.normal?.market || 'N/A'}, Holofoil: $${card.tcgplayer?.prices?.holofoil?.market || 'N/A'}`;
         } else {
             document.getElementById("output").innerText = "No Pokémon found.";
         }
