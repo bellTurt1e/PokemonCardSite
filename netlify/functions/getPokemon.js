@@ -10,7 +10,7 @@ exports.handler = async function (event, context) {
     }
 
     try {
-        const response = await fetch(`https://api.pokemontcg.io/v2/cards?q=nationalPokedexNumbers:${pokemonNumber}`, {
+        const response = await fetch(`https://api.pokemontcg.io/v2/cards?q=id:${pokemonNumber}`, {
             headers: { 'X-Api-Key': apiKey }
         });
 
