@@ -5,17 +5,28 @@
 <title>Pokemon Card checksite</title>
 </head>
 
-<h1>Pokemon Card checker</h1>
+<h1>Pokemon Card Checker</h1>
 <body>
+    
     <input type="text" id="pokemon_number" placeholder="Enter Pokémon Number">
     <button onclick="getPokemonNumber()">Submit</button>
 <p id="output"></p>
 
-<script>
-    function getPokemonNumber() {
+<script>//We need to use the type="module" in order to use the ES Module
+    async function getPokemonNumber() {
         const pokemonNumber = document.getElementById("pokemon_number").value;
-        document.getElementById("output").innerText = "You entered: " + pokemonNumber;
+        const response = await fetch(`/.netlify/functions/getPokemon?number=${pokemonNumber}`);
+        const data = await response.json();
+
+        if (data.data && data.data.length > 0) {
+            const card = data.data[0];
+            document.getElementById("output").innerText = `Pokémon: ${card.name}, Price: $${card.tcgplayer?.prices?.normal?.market || 'N/A'}`;
+        } else {
+            document.getElementById("output").innerText = "No Pokémon found.";
+        }
     }
+
+  
 </script>
 </body>
 
