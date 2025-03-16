@@ -1,94 +1,111 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>Pokemon Card Checker</title>
-    <style>
-        body {
-            background-color: grey;
-            text-align: center;
-            font-family: Arial, sans-serif;
-        }
-
-        .container {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .card-container {
-            display: flex;
-            align-items: center;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
-            max-width: 600px;
-            margin: auto;
-        }
-
-        #cardImage {
-            display: none;
-            max-width: 200px;
-            border-radius: 10px;
-            margin-right: 20px;
-        }
-
-        #output {
-            text-align: left;
-            font-size: 18px;
-            color: black;
-        }
-
-        input, button {
-            margin: 10px;
-        }
-    </style>
+<title>Pokémon Card Checker</title>
+<style>
+    body {
+        background-color: grey;
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 20px;
+    }
+    .card-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+    .card {
+        background: white;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+        text-align: center;
+        max-width: 200px;
+    }
+    .card img {
+        width: 100%;
+        border-radius: 5px;
+    }
+</style>
 </head>
-
 <body>
 
-    <h1>Pokemon Card Checker</h1>
+<div class="container">
+    <h1>Pokémon Card Checker</h1>
+    <input type="text" id="pokemon_input" placeholder="Enter ID or Name">
+    
+    <select id="search_type">
+        <option value="id">Search by ID</option>
+        <option value="name">Search by Name</option>
+    </select>
 
-    <input type="text" id="pokemon_number" placeholder="Enter Pokémon Number">
-    <button onclick="getPokemonNumber()">Submit</button>
+    <button onclick="getPokemon()">Search</button>
+    
+    <div class="card-container" id="results"></div>
+</div>
 
-    <div class="container">
-        <div class="card-container">
-            <img id="cardImage" src="" alt="Pokémon Card">
-            <div id="output"></div>
-        </div>
-    </div>
+<script>
+async function getPokemon() {
+    const inputValue = document.getElementById("pokemon_input").value.trim();
+    const searchType = document.getElementById("search_type").value;
+    const query = searchType === "id" ? `id:${inputValue}` : `name:${inputValue}`;
+    
+    const response = await fetch(`/.netlify/functions/getPokemon?query=${query}`);
+    const data = await response.json();
+    
+    const resultsDiv = document.getElementById("results");
+    resultsDiv.innerHTML = "";
 
-    <script>
-        async function getPokemonNumber() {
-            const pokemonNumber = document.getElementById("pokemon_number").value;
-            const response = await fetch(`/.netlify/functions/getPokemon?number=${pokemonNumber}`);
-            const data = await response.json();
+    if (data.data && data.data.length > 0) {
+      data.data.forEach(card => {
+    const cardDiv = document.createElement("div");
+    cardDiv.className = "card";
 
-            if (data.data && data.data.length > 0) {
-                const card = data.data[0];
+    // Check for normal price, if N/A use holofoil price
+    cardDiv.className = "card";
+      // This if statement will filter out costs that say N/A.Theres now an issue with styling but thats rather a small issue
+    let prices = [];
+    if (card.tcgplayer?.prices?.normal?.market) {
+        prices.push(`<p>Normal Price: $${card.tcgplayer.prices.normal.market}</p>`);
+    }
+    if (card.tcgplayer?.prices?.holofoil?.market) {
+        prices.push(`<p>Holofoil Price: $${card.tcgplayer.prices.holofoil.market}</p>`);
+    }
+    if (card.tcgplayer?.prices?.reverseHolofoil?.market) {
+        prices.push(`<p>Reverse Holo Price: $${card.tcgplayer.prices.reverseHolofoil.market}</p>`);
+    }
+    //Some cards are only first edition which is way when I used .prices.normal.market
+    if (card.tcgplayer?.prices["1stEditionHolofoil"]?.market) {
+        prices.push(`<p>1st Edition Holo Price: $${card.tcgplayer.prices["1stEditionHolofoil"].market}</p>`);
+    }
 
-                // Show image
-                const cardImage = document.getElementById("cardImage");
-                cardImage.src = card.images?.large || card.images?.small || "";
-                cardImage.style.display = "block";
+    cardDiv.innerHTML = `
+        <img src="${card.images.small}" alt="${card.name}">
+        <p><strong>${card.name}</strong></p>
+        <p>Set: ${card.set.name}</p>
+        <p>Card Id: ${card.id}</p>
+        <p>Rarity: ${card.rarity || 'N/A'}</p>
+        ${prices.join("")} <!-- Only displays available prices -->
+    `;
 
-                // Display card info
-                document.getElementById("output").innerHTML = `
-                    <strong>Pokémon:</strong> ${card.name}<br>
-                    <strong>Rarity:</strong> ${card.rarity || 'Unknown'}<br>
-                    <strong>Normal Price:</strong> $${card.tcgplayer?.prices?.normal?.market || 'N/A'}<br>
-                    <strong>Holofoil Price:</strong> $${card.tcgplayer?.prices?.holofoil?.market || 'N/A'}
-                `;
-            } else {
-                document.getElementById("output").innerText = "No Pokémon found.";
-                document.getElementById("cardImage").style.display = "none"; // Hide image if not found
-            }
-        }
-    </script>
+    resultsDiv.appendChild(cardDiv);
+
+
+    resultsDiv.appendChild(cardDiv);
+});
+    } else {
+        resultsDiv.innerHTML = "<p>No Pokémon found.</p>";
+    }
+    //man that was a pain set up
+}
+</script>
 
 </body>
-
 </html>

@@ -1,17 +1,16 @@
 exports.handler = async function (event, context) {
-    const apiKey = process.env.POKEMON_KEY; // Read from environment variables
-    const pokemonNumber = event.queryStringParameters.number;
+    const apiKey = process.env.POKEMON_KEY;
+    const query = event.queryStringParameters.query;
 
-    //This entire function will grab the JSON of the pokemon card so we can reference it 
-    if (!pokemonNumber) {
+    if (!query) {
         return {
             statusCode: 400,
-            body: JSON.stringify({ error: "No Pokémon number provided." }),
+            body: JSON.stringify({ error: "No search query provided." }),
         };
     }
 
     try {
-        const response = await fetch(`https://api.pokemontcg.io/v2/cards?q=id:${pokemonNumber}`, {
+        const response = await fetch(`https://api.pokemontcg.io/v2/cards?q=${query}`, {
             headers: { 'X-Api-Key': apiKey }
         });
 
