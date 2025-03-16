@@ -2,6 +2,7 @@ exports.handler = async function (event, context) {
     const apiKey = process.env.POKEMON_KEY; // Read from environment variables
     const pokemonNumber = event.queryStringParameters.number;
 
+    //This entire function will grab the JSON of the pokemon card so we can reference it 
     if (!pokemonNumber) {
         return {
             statusCode: 400,

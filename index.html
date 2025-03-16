@@ -2,43 +2,93 @@
 <html>
 
 <head>
-<title>Pokemon Card checksite</title>
-<style>
-    body {
-        background-color: grey;
-    }
-
-    .center {
-        text-align: center;
+    <title>Pokemon Card Checker</title>
+    <style>
+        body {
+            background-color: grey;
+            text-align: center;
+            font-family: Arial, sans-serif;
         }
-</style>
+
+        .container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-container {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            margin: auto;
+        }
+
+        #cardImage {
+            display: none;
+            max-width: 200px;
+            border-radius: 10px;
+            margin-right: 20px;
+        }
+
+        #output {
+            text-align: left;
+            font-size: 18px;
+            color: black;
+        }
+
+        input, button {
+            margin: 10px;
+        }
+    </style>
 </head>
 
-<h1 class = "center">Pokemon Card Checker</h1>
 <body>
-    <p class = "center">
+
+    <h1>Pokemon Card Checker</h1>
+
     <input type="text" id="pokemon_number" placeholder="Enter Pokémon Number">
     <button onclick="getPokemonNumber()">Submit</button>
-<p id="output"></p>
-</p>
 
-<script>//We need to use the type="module" in order to use the ES Module
-    async function getPokemonNumber() {
-        const pokemonNumber = document.getElementById("pokemon_number").value;
-        const response = await fetch(`/.netlify/functions/getPokemon?number=${pokemonNumber}`);
-        const data = await response.json();
+    <div class="container">
+        <div class="card-container">
+            <img id="cardImage" src="" alt="Pokémon Card">
+            <div id="output"></div>
+        </div>
+    </div>
 
-        if (data.data && data.data.length > 0) {
-            const card = data.data[0];
-            document.getElementById("output").innerText = `Pokémon: ${card.name}, Price: $${card.tcgplayer?.prices?.normal?.market || 'N/A'}, Holofoil: $${card.tcgplayer?.prices?.holofoil?.market || 'N/A'}
-            Rarity: ${card.rarity$}`;
-        } else {
-            document.getElementById("output").innerText = "No Pokémon found.";
+    <script>
+        async function getPokemonNumber() {
+            const pokemonNumber = document.getElementById("pokemon_number").value;
+            const response = await fetch(`/.netlify/functions/getPokemon?number=${pokemonNumber}`);
+            const data = await response.json();
+
+            if (data.data && data.data.length > 0) {
+                const card = data.data[0];
+
+                // Show image
+                const cardImage = document.getElementById("cardImage");
+                cardImage.src = card.images?.large || card.images?.small || "";
+                cardImage.style.display = "block";
+
+                // Display card info
+                document.getElementById("output").innerHTML = `
+                    <strong>Pokémon:</strong> ${card.name}<br>
+                    <strong>Rarity:</strong> ${card.rarity || 'Unknown'}<br>
+                    <strong>Normal Price:</strong> $${card.tcgplayer?.prices?.normal?.market || 'N/A'}<br>
+                    <strong>Holofoil Price:</strong> $${card.tcgplayer?.prices?.holofoil?.market || 'N/A'}
+                `;
+            } else {
+                document.getElementById("output").innerText = "No Pokémon found.";
+                document.getElementById("cardImage").style.display = "none"; // Hide image if not found
+            }
         }
-    }
+    </script>
 
-  
-</script>
 </body>
 
 </html>
