@@ -3,14 +3,24 @@
 
 <head>
 <title>Pokemon Card checksite</title>
+<style>
+    body {
+        background-color: grey;
+    }
+
+    .center {
+        text-align: center;
+        }
+</style>
 </head>
 
-<h1>Pokemon Card Checker</h1>
+<h1 class = "center">Pokemon Card Checker</h1>
 <body>
-    
+    <p class = "center">
     <input type="text" id="pokemon_number" placeholder="Enter Pokémon Number">
     <button onclick="getPokemonNumber()">Submit</button>
 <p id="output"></p>
+</p>
 
 <script>//We need to use the type="module" in order to use the ES Module
     async function getPokemonNumber() {
