@@ -1,0 +1,110 @@
+body {
+    font-family: Arial, sans-serif;
+}
+.container {
+position: relative;
+z-index: 1;
+padding: 20px;
+border-radius: 10px;
+}
+.card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.card {
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    text-align: center;
+    max-width: 200px;
+}
+.card img {
+    width: 100%;
+    border-radius: 5px;
+}
+#particles-js {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100vh;
+background: linear-gradient(45deg, #000000, #ffffff);
+z-index: -1;
+}
+
+.header {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+}
+
+button {
+    background-color: #6c6ae0;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #5a5ec8;
+}
+
+.hidden {
+    display: none;
+}
+/*
+    Below was painful to get things centered. PLEASE PLEASE PLEASE DONT FORGET TO CENTER ITEMS OR THE CARDS MAY MESS UP!!!!!!!!!!!
+*/
+.search-box-container {
+background: rgba(255, 255, 255, 0.9); /* White with slight transparency */
+padding: 20px;
+border-radius: 10px;
+text-align: center;
+box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+width: 600px; /* Adjust width as needed */
+margin: 0 auto; /* This centers it horizontally */
+}
+
+.search-container {
+    display: flex;
+    flex-direction: row;  /* Stack elements vertically */
+    align-items: center;     /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+    padding: 0px 15px;
+}
+
+.search-container input,
+.search-container select,
+.search-container button {
+    margin: 5px;             /* Space between elements */
+    padding: 10px;
+    width: 250px;            /* Make them equal in width */
+    text-align: center;      /* Center text inside */
+}
+
+#about-section {
+display: none; /* Hidden initially */
+margin-top: 20px; /* Space below search */
+padding: 15px;
+background: rgba(255, 255, 255, 0.9); /* Light background */
+text-align: center;
+border-radius: 10px;
+box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+#instructions {
+display: none; /* Hidden initially */
+margin-top: 20px; /* Space below search */
+padding: 15px;
+background: rgba(255, 255, 255, 0.9); /* Light background */
+text-align: center;
+border-radius: 10px;
+box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}

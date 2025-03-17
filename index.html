@@ -2,63 +2,43 @@
 <html>
 <head>
 <title>Pokémon Card Checker</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-    }
-    .container {
-    position: relative;
-    z-index: 1;
-    padding: 20px;
-    border-radius: 10px;
-    }
-    .card-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 20px;
-        flex-wrap: wrap;
-    }
-    .card {
-        background: white;
-        padding: 10px;
-        border-radius: 10px;
-        box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
-        text-align: center;
-        max-width: 200px;
-    }
-    .card img {
-        width: 100%;
-        border-radius: 5px;
-    }
-    #particles-js {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: linear-gradient(45deg, #6c6ae0, #ffffff);
-    z-index: -1;
-}
-
-</style>
+<link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+    <div class="container">
+        <div class="search-box-container">
+            <div class="header">
+                <h1>Pokémon Card Checker</h1>
+                <button onclick="toggleInstructions()" style="float:right">How to Use</button>
+                <button onclick="toggleAbout()" style="float:right">About</button>
+            </div>
+            
+            <div class = "search-container"> 
+                <input type="text" id="pokemon_input" placeholder="Enter ID or Name">
+                <select id="search_type">
+                    <option value="id">Search by ID</option>
+                    <option value="name">Search by Name</option>
+                </select>
+                <button onclick="getPokemon()">Search</button>
+            </div>
+        </div>
 
-<div class="container">
-    <h1>Pokémon Card Checker</h1>
-    <input type="text" id="pokemon_input" placeholder="Enter ID or Name">
+        <div id="instructions" class="hidden">
+            <h1>Instructions</h1>
+            <p>Enter a Pokémon ID(ex: base4-4) or name(ex: charizard), select the search type, and click search.</p>
+        </div>
     
-    <select id="search_type">
-        <option value="id">Search by ID</option>
-        <option value="name">Search by Name</option>
-    </select>
-
-    <button onclick="getPokemon()">Search</button>
+        <div id="about-section" class="hidden">
+            <h1>Why</h1>
+            <p>I created this tool to make finding pokemon cards prices and ids easier for my friend AJ.</p>
+            <h1>How</h1>
+            <p>This project uses tcgplayer developer API and uses Vincent Garreaus particles repository.</p>
+            <p>If your curious how I made it please visit my <a href="https://github.com/bellTurt1e/PokemonCardSite">github repository</a></p>
+            
+        </div>
+        <div class="card-container" id="results"></div>
+    </div>
     
-    <div class="card-container" id="results"></div>
-    
-</div>
 
 <div id="particles-js"></div>
 
@@ -117,7 +97,32 @@ async function getPokemon() {
     //man that was a pain set up
 }
 </script>
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+<script>
+function toggleInstructions() {
+    const instructions = document.getElementById("instructions");
+    if (instructions.style.display === "none" || instructions.style.display === "") {
+        instructions.style.display = "block";
+    } else {
+        instructions.style.display = "none";
+    }
+}
+
+
+function toggleAbout() {
+    const aboutSection = document.getElementById("about-section");
+    if (aboutSection.style.display === "none" || aboutSection.style.display === "") {
+        aboutSection.style.display = "block";
+    } else {
+        aboutSection.style.display = "none";
+    }
+}
+
+
+</script>
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js">
+    //The pokemon cards on the background are done using Vincent Garreaus repository: github.com/VincentGarreau/particles.js
+</script>
     <script>
         particlesJS.load('particles-js', 'assets/particles.json', function() {
             console.log('particles.js config loaded');
@@ -125,90 +130,55 @@ async function getPokemon() {
 
         // Fallback in case the config file doesn't load
         particlesJS('particles-js', {
-            "particles": {
-                "number": {
-                    "value": 80,
-                    "density": {
-                        "enable": true,
-                        "value_area": 800
-                    }
-                },
-                "color": {
-                    "value": "#000000"
-                },
-                "shape": {
-                    "type": "circle"
-                },
-                "opacity": {
-                    "value": 0.5,
-                    "random": false
-                },
-                "size": {
-                    "value": 3,
-                    "random": true
-                },
-                "line_linked": {
-                    "enable": true,
-                    "distance": 150,
-                    "color": "#64646e",
-                    "opacity": 0.4,
-                    "width": 1
-                },
-                "move": {
-                    "enable": true,
-                    "speed": 2,
-                    "direction": "none",
-                    "random": false,
-                    "straight": false,
-                    "out_mode": "out",
-                    "bounce": false
-                }
-            },
-            "interactivity": {
-                "detect_on": "window",
-                "events": {
-                    "onhover": {
-                        "enable": true,
-                        "mode": "repulse"
-                    },
-                    "onclick": {
-                        "enable": true,
-                        "mode": "push"
-                    },
-                    "resize": true
-                },
-                "modes": {
-                    "grab": {
-                        "distance": 400,
-                        "line_linked": {
-                            "opacity": 1
-                        }
-                    },
-                    "bubble": {
-                        "distance": 400,
-                        "size": 40,
-                        "duration": 2,
-                        "opacity": 8,
-                        "speed": 3
-                    },
-                    "repulse": {
-                        "distance": 200,
-                        "duration": 0.4
-                    },
-                    "push": {
-                        "particles_nb": 4
-                    },
-                    "remove": {
-                        "particles_nb": 2
-                    }
-                }
-            },
-            "retina_detect": true
-         });
+    "particles": {
+        "number": {
+            "value": 50,  // Number of Pokémon card backs
+            "density": {
+                "enable": true,
+                "value_area": 800
+            }
+        },
+        "shape": {
+            "type": "image",  // Use an image instead of dots
+            "image": {
+                "src": "assets/pokemon.png",  // Path to Pokémon card back image
+                "width": 100,
+                "height": 150
+            }
+        },
+        "opacity": {
+            "value": 0.8,  // Make them slightly transparent
+            "random": true
+        },
+        "size": {
+            "value": 40,  // Size of each card back
+            "random": true
+        },
+        "move": {
+            "enable": true,
+            "speed": 2,  // Speed of movement
+            "direction": "none",
+            "random": true,
+            "straight": false,
+            "out_mode": "out",
+            "bounce": false
+        }
+    },
+    "interactivity": {
+        "events": {
+            "onhover": {
+                "enable": true,
+                "mode": "bubble"
+            },//Theres a bug here when using images. For some reason it creates more instead of pushing them away. Not entirly sure why. Will look into.
+            "onclick": {
+                "enable": true,
+                "mode": "push"
+            }
+        }
+    },
+    "retina_detect": true
+});
+
     </script>
-    <script src="js/global.js"></script>
-    <script src="js/about.js"></script>
-
-
 </body>
 </html>
